@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { CreateListingInput } from './dto/create-listing.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Listing } from './entities/listing.entity';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
+import { PagePagination } from './dto/page-pagination.dto';
 
 @Injectable()
 export class ListingService {
@@ -15,11 +16,10 @@ export class ListingService {
     return await this.listingRepository.save(createListingInput);
   }
 
-  public async findAll(
-    where?: FindOptionsWhere<Listing> | FindOptionsWhere<Listing>[],
-  ) {
+  public async findAll(pagination: PagePagination) {
     return await this.listingRepository.find({
-      where,
+      skip: (pagination.page - 1) * pagination.perPage,
+      take: pagination.perPage,
       relations: { user: true },
     });
   }
@@ -29,6 +29,17 @@ export class ListingService {
       where: {
         id,
       },
+      relations: { user: true },
+    });
+  }
+
+  public async getUserListings(userId: string, pagination: PagePagination) {
+    return await this.listingRepository.find({
+      where: {
+        userId,
+      },
+      skip: (pagination.page - 1) * pagination.perPage,
+      take: pagination.perPage,
       relations: { user: true },
     });
   }

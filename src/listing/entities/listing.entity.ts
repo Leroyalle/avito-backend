@@ -38,7 +38,7 @@ export class Listing {
   user: User;
 
   @Column()
-  @Field({ description: 'ID автора' })
+  @Field({ description: 'ID пользователя' })
   userId: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

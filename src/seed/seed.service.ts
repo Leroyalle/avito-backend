@@ -24,7 +24,7 @@ export class SeedService {
       refreshToken: null,
     });
 
-    const listingsData = Array(5)
+    const listingsData = Array(60)
       .fill(null)
       .map(() => ({
         name: faker.commerce.productName(),

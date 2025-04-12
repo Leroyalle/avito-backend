@@ -50,7 +50,7 @@ type Listing {
   images: [String!]!
   user: User!
 
-  """ID автора"""
+  """ID пользователя"""
   userId: String!
 
   """Дата создания объявления"""
@@ -58,7 +58,15 @@ type Listing {
 
   """Дата последнего обновления объявления"""
   updatedAt: Timestamp!
-  getUserListings: Listing!
+  getUserListings(pagePagination: PagePagination!): Listing!
+}
+
+input PagePagination {
+  """Страница"""
+  page: Int = 1
+
+  """Количество"""
+  perPage: Int = 20
 }
 
 type Auth {
@@ -75,7 +83,7 @@ type Logout {
 }
 
 type Query {
-  findAllListings: [Listing!]!
+  findAllListings(pagePagination: PagePagination!): [Listing!]!
   findOneListing(id: ID!): Listing!
   findAllUsers: [User!]!
   findOneUser(id: ID!): User!

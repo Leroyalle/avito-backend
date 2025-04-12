@@ -11,6 +11,7 @@ import { ListingService } from './listing.service';
 import { Listing } from './entities/listing.entity';
 import { CreateListingInput } from './dto/create-listing.input';
 import { User } from 'src/user/entities/user.entity';
+import { PagePagination } from './dto/page-pagination.dto';
 
 @Resolver(() => Listing)
 export class ListingResolver {
@@ -24,13 +25,19 @@ export class ListingResolver {
   }
 
   @Query(() => [Listing], { name: 'findAllListings' })
-  findAll() {
-    return this.listingService.findAll();
+  findAll(@Args('pagePagination') pagination: PagePagination) {
+    return this.listingService.findAll(pagination);
   }
 
   @ResolveField(() => Listing, { name: 'getUserListings' })
-  getUserListings(@Parent() user: User) {
-    return this.listingService.findAll({ userId: user.id });
+  getUserListings(
+    @Parent() user: User,
+    @Args('pagePagination') pagination: PagePagination,
+  ) {
+    return this.listingService.getUserListings(user.id, {
+      page: pagination.page,
+      perPage: pagination.perPage,
+    });
   }
 
   @Query(() => Listing, { name: 'findOneListing' })
