@@ -29,6 +29,14 @@ export class ListingResolver {
     return this.listingService.findAll(pagination);
   }
 
+  @Query(() => [Listing], { name: 'findAllBySlugCategory' })
+  findAllBySlugCategory(
+    @Args('pagePagination') pagination: PagePagination,
+    @Args('slug') slug: string,
+  ) {
+    return this.listingService.findAllBySlugCategory(pagination, slug);
+  }
+
   @ResolveField(() => Listing, { name: 'getUserListings' })
   getUserListings(
     @Parent() user: User,

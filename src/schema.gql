@@ -2,6 +2,20 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Category {
+  """ID категории"""
+  id: ID!
+
+  """Название категории"""
+  name: String!
+
+  """Slug категории"""
+  slug: String!
+
+  """Лого категории"""
+  image: String!
+}
+
 type User {
   """ID пользователя"""
   id: ID!
@@ -34,7 +48,7 @@ type User {
 scalar Timestamp
 
 type Listing {
-  """Название объявления"""
+  """ID объявления"""
   id: ID!
 
   """Название объявления"""
@@ -52,6 +66,9 @@ type Listing {
 
   """ID пользователя"""
   userId: String!
+
+  """Категории объявления"""
+  categories: [Category!]!
 
   """Дата создания объявления"""
   createdAt: Timestamp!
@@ -84,7 +101,9 @@ type Logout {
 
 type Query {
   findAllListings(pagePagination: PagePagination!): [Listing!]!
+  findAllBySlugCategory(pagePagination: PagePagination!, slug: String!): [Listing!]!
   findOneListing(id: ID!): Listing!
+  findAllCategories: [Category!]!
   findAllUsers: [User!]!
   findOneUser(id: ID!): User!
 }

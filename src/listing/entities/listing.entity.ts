@@ -1,9 +1,12 @@
 import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
+import { Category } from 'src/category/entities/category.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -13,7 +16,7 @@ import {
 @Entity()
 export class Listing {
   @PrimaryGeneratedColumn('uuid')
-  @Field(() => ID, { description: 'Название объявления' })
+  @Field(() => ID, { description: 'ID объявления' })
   id: string;
 
   @Column()
@@ -40,6 +43,21 @@ export class Listing {
   @Column()
   @Field({ description: 'ID пользователя' })
   userId: string;
+
+  @ManyToMany(() => Category, (listing) => listing.id, { onDelete: 'CASCADE' })
+  @JoinTable({
+    name: 'listing_categories',
+    joinColumn: {
+      name: 'listingId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'categoryId',
+      referencedColumnName: 'id',
+    },
+  })
+  @Field(() => [Category], { description: 'Категории объявления' })
+  categories: Category[];
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   @Field({ description: 'Дата создания объявления' })

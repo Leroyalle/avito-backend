@@ -7,8 +7,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
-import { isProd } from './common/lib/is-prod';
+import { IS_DEV } from './common/lib/is-dev';
 import { SeedModule } from './seed/seed.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { SeedModule } from './seed/seed.module';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       // sortSchema: true,
-      playground: !isProd,
+      playground: IS_DEV,
       // installSubscriptionHandlers: true,
       buildSchemaOptions: {
         dateScalarMode: 'timestamp',
@@ -43,6 +44,7 @@ import { SeedModule } from './seed/seed.module';
     UserModule,
     AuthModule,
     SeedModule,
+    CategoryModule,
   ],
 })
 export class AppModule {}
