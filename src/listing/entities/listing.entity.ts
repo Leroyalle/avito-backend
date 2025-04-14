@@ -11,6 +11,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Filter } from '../filters/entities/filter.entity';
 
 @ObjectType()
 @Entity()
@@ -58,6 +59,21 @@ export class Listing {
   })
   @Field(() => [Category], { description: 'Категории объявления' })
   categories: Category[];
+
+  @ManyToMany(() => Filter, (filter) => filter.id, { onDelete: 'CASCADE' })
+  @JoinTable({
+    name: 'listing_filters',
+    joinColumn: {
+      name: 'listingId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'filterId',
+      referencedColumnName: 'id',
+    },
+  })
+  @Field(() => [Filter], { description: 'Фильтр объявления' })
+  filters: Filter[];
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   @Field({ description: 'Дата создания объявления' })

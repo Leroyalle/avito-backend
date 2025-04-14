@@ -2,9 +2,11 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateListingInput } from './dto/create-listing.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Listing } from './entities/listing.entity';
-import { Repository } from 'typeorm';
-import { PagePagination } from './dto/page-pagination.dto';
+import { Repository, In } from 'typeorm';
+import { PagePagination } from '../common/dto/page-pagination.dto';
 import { CategoryService } from 'src/category/category.service';
+import { FiltersService } from 'src/listing/filters/filters.service';
+import { FindListingsInput } from './dto/find-listings.input';
 
 @Injectable()
 export class ListingService {
@@ -12,6 +14,7 @@ export class ListingService {
     @InjectRepository(Listing)
     private readonly listingRepository: Repository<Listing>,
     private readonly categoryService: CategoryService,
+    private readonly filtersService: FiltersService,
   ) {}
 
   public async create(createListingInput: CreateListingInput) {
@@ -26,8 +29,14 @@ export class ListingService {
     });
   }
 
-  public async findAllBySlugCategory(pagination: PagePagination, slug: string) {
+  public async findAllBySlugCategory(
+    findListingsInput: FindListingsInput,
+    slug: string,
+  ) {
     const findCategory = await this.categoryService.findBySlug(slug);
+    const findFilters = await this.filtersService.findAll({
+      id: In(findListingsInput.filters),
+    });
 
     if (!findCategory) {
       throw new BadRequestException('Такой категории не существует');
@@ -38,9 +47,14 @@ export class ListingService {
         categories: {
           slug,
         },
+        ...(findFilters.length > 0 && {
+          filters: {
+            id: In(findFilters.map((filter) => filter.id)),
+          },
+        }),
       },
-      skip: (pagination.page - 1) * pagination.perPage,
-      take: pagination.perPage,
+      skip: (findListingsInput.page - 1) * findListingsInput.perPage,
+      take: findListingsInput.perPage,
       relations: { user: true },
     });
   }

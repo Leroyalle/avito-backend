@@ -47,6 +47,20 @@ type User {
 """
 scalar Timestamp
 
+type Filter {
+  """ID фильтра"""
+  id: ID!
+
+  """Название фильтра"""
+  name: String!
+
+  """Дата создания фильтра"""
+  createdAt: Timestamp!
+
+  """Дата последнего обновления фильтра"""
+  updatedAt: Timestamp!
+}
+
 type Listing {
   """ID объявления"""
   id: ID!
@@ -69,6 +83,9 @@ type Listing {
 
   """Категории объявления"""
   categories: [Category!]!
+
+  """Фильтр объявления"""
+  filters: [Filter!]!
 
   """Дата создания объявления"""
   createdAt: Timestamp!
@@ -101,11 +118,29 @@ type Logout {
 
 type Query {
   findAllListings(pagePagination: PagePagination!): [Listing!]!
-  findAllBySlugCategory(pagePagination: PagePagination!, slug: String!): [Listing!]!
+  findAllBySlugCategory(findListingsInput: FindListingsInput!, slug: String!): [Listing!]!
   findOneListing(id: ID!): Listing!
   findAllCategories: [Category!]!
+  filters: [Filter!]!
   findAllUsers: [User!]!
   findOneUser(id: ID!): User!
+}
+
+input FindListingsInput {
+  """Страница"""
+  page: Int = 1
+
+  """Количество"""
+  perPage: Int = 20
+
+  """ID фильтров"""
+  filters: [ID!]!
+
+  """Минимальная цена фильтра"""
+  minPrice: Int! = 0
+
+  """Максимальная цена фильтра"""
+  maxPrice: Int! = 0
 }
 
 type Mutation {

@@ -28,14 +28,14 @@ export class SeedService {
       refreshToken: null,
     });
 
-    const categories = Array(12)
+    const categories = Array(18)
       .fill(0)
       .map(() => {
         const name = faker.commerce.department();
         return {
           name,
-          slug: generateSlug(name) + `-${Math.floor(Math.random() * 100)}`,
-          image: faker.image.urlPicsumPhotos(),
+          slug: generateSlug(name) + `-${Math.floor(Math.random() * 1000)}`,
+          image: faker.image.url(),
         };
       });
 

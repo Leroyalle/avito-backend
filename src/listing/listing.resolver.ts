@@ -11,7 +11,8 @@ import { ListingService } from './listing.service';
 import { Listing } from './entities/listing.entity';
 import { CreateListingInput } from './dto/create-listing.input';
 import { User } from 'src/user/entities/user.entity';
-import { PagePagination } from './dto/page-pagination.dto';
+import { PagePagination } from '../common/dto/page-pagination.dto';
+import { FindListingsInput } from './dto/find-listings.input';
 
 @Resolver(() => Listing)
 export class ListingResolver {
@@ -31,10 +32,10 @@ export class ListingResolver {
 
   @Query(() => [Listing], { name: 'findAllBySlugCategory' })
   findAllBySlugCategory(
-    @Args('pagePagination') pagination: PagePagination,
+    @Args('findListingsInput') findListingsInput: FindListingsInput,
     @Args('slug') slug: string,
   ) {
-    return this.listingService.findAllBySlugCategory(pagination, slug);
+    return this.listingService.findAllBySlugCategory(findListingsInput, slug);
   }
 
   @ResolveField(() => Listing, { name: 'getUserListings' })
