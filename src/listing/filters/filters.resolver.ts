@@ -6,7 +6,7 @@ import { Filter } from './entities/filter.entity';
 export class FiltersResolver {
   constructor(private readonly filtersService: FiltersService) {}
 
-  @Query(() => [Filter], { name: 'filters' })
+  @Query(() => [Filter], { name: 'findAllFilters' })
   findAll() {
     return this.filtersService.findAll();
   }

@@ -121,7 +121,7 @@ type Query {
   findAllBySlugCategory(findListingsInput: FindListingsInput!, slug: String!): [Listing!]!
   findOneListing(id: ID!): Listing!
   findAllCategories: [Category!]!
-  filters: [Filter!]!
+  findAllFilters: [Filter!]!
   findAllUsers: [User!]!
   findOneUser(id: ID!): User!
 }

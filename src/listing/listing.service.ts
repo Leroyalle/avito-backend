@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateListingInput } from './dto/create-listing.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Listing } from './entities/listing.entity';
-import { Repository, In } from 'typeorm';
+import { Repository, In, Between } from 'typeorm';
 import { PagePagination } from '../common/dto/page-pagination.dto';
 import { CategoryService } from 'src/category/category.service';
 import { FiltersService } from 'src/listing/filters/filters.service';
@@ -52,6 +52,8 @@ export class ListingService {
             id: In(findFilters.map((filter) => filter.id)),
           },
         }),
+
+        price: Between(findListingsInput.minPrice, findListingsInput.maxPrice),
       },
       skip: (findListingsInput.page - 1) * findListingsInput.perPage,
       take: findListingsInput.perPage,
