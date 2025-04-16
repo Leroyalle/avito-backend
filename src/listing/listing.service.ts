@@ -7,6 +7,7 @@ import { PagePagination } from '../common/dto/page-pagination.dto';
 import { CategoryService } from 'src/category/category.service';
 import { FiltersService } from 'src/listing/filters/filters.service';
 import { FindListingsInput } from './dto/find-listings.input';
+import { SearchListingsInput } from './dto/search-listings';
 
 @Injectable()
 export class ListingService {
@@ -79,5 +80,16 @@ export class ListingService {
       take: pagination.perPage,
       relations: { user: true },
     });
+  }
+
+  public async searchListings(searchListingsInput: SearchListingsInput) {
+    return await this.listingRepository
+      .createQueryBuilder('listing')
+      .leftJoinAndSelect('listing.categories', 'categories')
+      .where('LOWER(listing.name) LIKE LOWER(:name)', {
+        name: `${searchListingsInput.name}%`,
+      })
+      .limit(10)
+      .getMany();
   }
 }

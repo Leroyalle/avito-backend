@@ -120,6 +120,7 @@ type Query {
   findAllListings(pagePagination: PagePagination!): [Listing!]!
   findAllBySlugCategory(findListingsInput: FindListingsInput!, slug: String!): [Listing!]!
   findOneListing(id: ID!): Listing!
+  searchListings(searchListingsInput: SearchListingsInput!): [Listing!]!
   findAllCategories: [Category!]!
   findAllFilters: [Filter!]!
   findAllUsers: [User!]!
@@ -141,6 +142,11 @@ input FindListingsInput {
 
   """Максимальная цена фильтра"""
   maxPrice: Int! = 0
+}
+
+input SearchListingsInput {
+  """Название объявления"""
+  name: String!
 }
 
 type Mutation {

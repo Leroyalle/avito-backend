@@ -13,6 +13,7 @@ import { CreateListingInput } from './dto/create-listing.input';
 import { User } from 'src/user/entities/user.entity';
 import { PagePagination } from '../common/dto/page-pagination.dto';
 import { FindListingsInput } from './dto/find-listings.input';
+import { SearchListingsInput } from './dto/search-listings';
 
 @Resolver(() => Listing)
 export class ListingResolver {
@@ -52,5 +53,12 @@ export class ListingResolver {
   @Query(() => Listing, { name: 'findOneListing' })
   findOne(@Args('id', { type: () => ID }) id: string) {
     return this.listingService.findOne(id);
+  }
+
+  @Query(() => [Listing], { name: 'searchListings' })
+  searchListings(
+    @Args('searchListingsInput') searchListingsInput: SearchListingsInput,
+  ) {
+    return this.listingService.searchListings(searchListingsInput);
   }
 }
