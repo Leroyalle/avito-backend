@@ -142,7 +142,7 @@ type Query {
   findOneListing(id: ID!): Listing!
   searchListings(searchListingsInput: SearchListingsInput!): [Listing!]!
   findAllCategories: [Category!]!
-  field(id: Int!): FieldEntity!
+  findAllByCategory(categoryId: String!): [FieldEntity!]!
   findAllFilters: [Filter!]!
   findAllUsers: [User!]!
   findOneUser(id: ID!): User!
@@ -172,9 +172,6 @@ input SearchListingsInput {
 
 type Mutation {
   createListing(createListingInput: CreateListingInput!): Listing!
-  createField(createFieldInput: CreateFieldInput!): FieldEntity!
-  updateField(updateFieldInput: UpdateFieldInput!): FieldEntity!
-  removeField(id: Int!): FieldEntity!
   createUser(createUserInput: CreateUserInput!): User!
   signUp(signUpInput: RegisterInput!): Auth!
   signIn(signInInput: RegisterInput!): Auth!
@@ -194,17 +191,6 @@ input CreateListingInput {
 
   """Изображения объявления"""
   images: [String!]!
-}
-
-input CreateFieldInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateFieldInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
 }
 
 input CreateUserInput {

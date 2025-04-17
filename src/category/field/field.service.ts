@@ -1,26 +1,30 @@
-import { Injectable } from '@nestjs/common';
-import { CreateFieldInput } from './dto/create-field.input';
-import { UpdateFieldInput } from './dto/update-field.input';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { CategoryService } from '../category.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { FieldEntity } from './entities/field.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class FieldService {
-  create(createFieldInput: CreateFieldInput) {
-    return 'This action adds a new field';
-  }
+  constructor(
+    @InjectRepository(FieldEntity)
+    private readonly fieldRepository: Repository<FieldEntity>,
+    private readonly categoryService: CategoryService,
+  ) {}
 
-  findAll() {
-    return `This action returns all field`;
-  }
+  public async findAllByCategory(categoryId: string) {
+    const findCategory = await this.categoryService.findOne(categoryId);
 
-  findOne(id: number) {
-    return `This action returns a #${id} field`;
-  }
+    if (!findCategory) {
+      throw new NotFoundException('Категория не найдена');
+    }
 
-  update(id: number, updateFieldInput: UpdateFieldInput) {
-    return `This action updates a #${id} field`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} field`;
+    return await this.fieldRepository.find({
+      where: {
+        categories: {
+          id: findCategory.id,
+        },
+      },
+    });
   }
 }
