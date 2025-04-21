@@ -11,5 +11,6 @@ import { CategoryModule } from '../category.module';
     forwardRef(() => CategoryModule),
   ],
   providers: [FieldResolver, FieldService],
+  exports: [FieldService],
 })
 export class FieldModule {}

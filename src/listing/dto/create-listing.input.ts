@@ -1,4 +1,5 @@
-import { InputType, Field, Int } from '@nestjs/graphql';
+import { InputType, Field, Int, ID } from '@nestjs/graphql';
+import { CreateListingFieldsInput } from './create-listing-fields.input';
 
 @InputType()
 export class CreateListingInput {
@@ -13,4 +14,10 @@ export class CreateListingInput {
 
   @Field(() => [String], { description: 'Изображения объявления' })
   images: string[];
+
+  @Field(() => ID, { description: 'ID категории' })
+  categoryId: string;
+
+  @Field(() => [CreateListingFieldsInput], { description: 'Характеристики' })
+  fields: CreateListingFieldsInput[];
 }

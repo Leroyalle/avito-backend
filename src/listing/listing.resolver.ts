@@ -14,16 +14,21 @@ import { User } from 'src/user/entities/user.entity';
 import { PagePagination } from '../common/dto/page-pagination.dto';
 import { FindListingsInput } from './dto/find-listings.input';
 import { SearchListingsInput } from './dto/search-listings';
+import { UseGuards } from '@nestjs/common';
+import { AccessTokenGuard } from 'src/common/guards/access-token.guard';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 
 @Resolver(() => Listing)
 export class ListingResolver {
   constructor(private readonly listingService: ListingService) {}
 
+  @UseGuards(AccessTokenGuard)
   @Mutation(() => Listing)
   createListing(
     @Args('createListingInput') createListingInput: CreateListingInput,
+    @CurrentUser() userId: string,
   ) {
-    return this.listingService.create(createListingInput);
+    return this.listingService.create(createListingInput, userId);
   }
 
   @Query(() => [Listing], { name: 'findAllListings' })

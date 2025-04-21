@@ -8,6 +8,7 @@ import { CategoryService } from 'src/category/category.service';
 import { FiltersService } from 'src/listing/filters/filters.service';
 import { FindListingsInput } from './dto/find-listings.input';
 import { SearchListingsInput } from './dto/search-listings';
+import { FieldService } from 'src/category/field/field.service';
 
 @Injectable()
 export class ListingService {
@@ -16,10 +17,28 @@ export class ListingService {
     private readonly listingRepository: Repository<Listing>,
     private readonly categoryService: CategoryService,
     private readonly filtersService: FiltersService,
+    private readonly fieldService: FieldService,
   ) {}
 
-  public async create(createListingInput: CreateListingInput) {
-    return await this.listingRepository.save(createListingInput);
+  public async create(createListingInput: CreateListingInput, userId: string) {
+    const fieldIds = createListingInput.fields.map((field) => field.fieldId);
+    const findFields = await this.fieldService.checkFieldsByCategory(
+      createListingInput.categoryId,
+      fieldIds,
+    );
+
+    const formattedFields = this.fieldService.formatFields(
+      findFields,
+      createListingInput.fields,
+    );
+
+    const { fields: _, ...listingInput } = createListingInput;
+
+    return await this.listingRepository.save({
+      ...listingInput,
+      userId,
+      ...formattedFields,
+    });
   }
 
   public async findAll(pagination: PagePagination) {

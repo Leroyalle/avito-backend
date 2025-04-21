@@ -32,6 +32,14 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-argument': 'warn',
       'prettier/prettier': ['error', { endOfLine: 'auto' }],
       '@typescript-eslint/no-unsafe-return': 'off',
+      'no-unused-vars': 'off', // Выключить стандартное правило ESLint
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          argsIgnorePattern: '^_', // Игнорировать переменные, начинающиеся с "_"
+          varsIgnorePattern: '^_', // Игнорировать переменные, начинающиеся с "_"
+        },
+      ],
     },
   },
 );

@@ -112,6 +112,60 @@ type Listing {
 
   """Дата последнего обновления объявления"""
   updatedAt: Timestamp!
+
+  """Тип товара"""
+  productType: String!
+
+  """Состояние товара"""
+  condition: String!
+
+  """Год выпуска"""
+  yearOfManufacture: Int!
+
+  """Производитель"""
+  manufacturer: String!
+
+  """Модель товара"""
+  model: String!
+
+  """Цвет товара"""
+  color: String!
+
+  """Размер товара"""
+  size: String!
+
+  """Вес товара"""
+  weight: String!
+
+  """Тип привода (для автомобилей)"""
+  driveType: String!
+
+  """Километраж (для автомобилей)"""
+  mileage: Int!
+
+  """Количество комнат (для недвижимости)"""
+  numberOfRooms: Int!
+
+  """Этаж (для недвижимости)"""
+  floor: Int!
+
+  """Площадь товара или недвижимости"""
+  area: Int!
+
+  """Материал (для мебели)"""
+  material: String!
+
+  """Тип подключения (для техники)"""
+  connectionType: String!
+
+  """Объем памяти (для телефонов и компьютеров)"""
+  memorySize: Int!
+
+  """Экологический класс (для автомобилей)"""
+  environmentalClass: String!
+
+  """Тип двигателя (для автомобилей)"""
+  engineType: String!
   getUserListings(pagePagination: PagePagination!): Listing!
 }
 
@@ -191,6 +245,20 @@ input CreateListingInput {
 
   """Изображения объявления"""
   images: [String!]!
+
+  """ID категории"""
+  categoryId: ID!
+
+  """Характеристики"""
+  fields: [CreateListingFieldsInput!]!
+}
+
+input CreateListingFieldsInput {
+  """ID характеристики"""
+  fieldId: ID!
+
+  """Значение характеристики"""
+  value: String!
 }
 
 input CreateUserInput {

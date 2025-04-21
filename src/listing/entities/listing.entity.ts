@@ -36,7 +36,7 @@ export class Listing {
   @Field(() => [String], { description: 'Изображения объявления' })
   images: string[];
 
-  @Field(() => User)
+  @Field(() => User, { nullable: false })
   @ManyToOne(() => User, (user) => user.listings, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   user: User;
@@ -82,4 +82,80 @@ export class Listing {
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   @Field({ description: 'Дата последнего обновления объявления' })
   updatedAt: Date;
+
+  // _____________________________________________
+
+  @Column({ nullable: true })
+  @Field({ description: 'Тип товара' })
+  productType?: string;
+
+  @Column({ nullable: true })
+  @Field({ description: 'Состояние товара' })
+  condition?: string;
+
+  @Column({ nullable: true })
+  @Field(() => Int, { description: 'Год выпуска' })
+  yearOfManufacture?: number;
+
+  @Column({ nullable: true })
+  @Field({ description: 'Производитель' })
+  manufacturer?: string;
+
+  @Column({ nullable: true })
+  @Field({ description: 'Модель товара' })
+  model?: string;
+
+  @Column({ nullable: true })
+  @Field({ description: 'Цвет товара' })
+  color?: string;
+
+  @Column({ nullable: true })
+  @Field({ description: 'Размер товара' })
+  size?: string;
+
+  @Column({ nullable: true })
+  @Field({ description: 'Вес товара' })
+  weight?: string;
+
+  @Column({ nullable: true })
+  @Field({ description: 'Тип привода (для автомобилей)' })
+  driveType?: string;
+
+  @Column({ nullable: true })
+  @Field(() => Int, { description: 'Километраж (для автомобилей)' })
+  mileage?: number;
+
+  @Column({ nullable: true })
+  @Field(() => Int, { description: 'Количество комнат (для недвижимости)' })
+  numberOfRooms?: number;
+
+  @Column({ nullable: true })
+  @Field(() => Int, { description: 'Этаж (для недвижимости)' })
+  floor?: number;
+
+  @Column({ nullable: true })
+  @Field(() => Int, { description: 'Площадь товара или недвижимости' })
+  area?: number;
+
+  @Column({ nullable: true })
+  @Field({ description: 'Материал (для мебели)' })
+  material?: string;
+
+  @Column({ nullable: true })
+  @Field({ description: 'Тип подключения (для техники)' })
+  connectionType?: string;
+
+  @Column({ nullable: true })
+  @Field(() => Int, {
+    description: 'Объем памяти (для телефонов и компьютеров)',
+  })
+  memorySize?: number;
+
+  @Column({ nullable: true })
+  @Field({ description: 'Экологический класс (для автомобилей)' })
+  environmentalClass?: string;
+
+  @Column({ nullable: true })
+  @Field({ description: 'Тип двигателя (для автомобилей)' })
+  engineType?: string;
 }

@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { faker } from '@faker-js/faker/locale/ru';
 import { Category } from 'src/category/entities/category.entity';
 import { generateSlug } from 'src/common/lib/generate-slug';
+import { FieldEntity } from 'src/category/field/entities/field.entity';
 
 @Injectable()
 export class SeedService {
@@ -16,6 +17,8 @@ export class SeedService {
     private userRepository: Repository<User>,
     @InjectRepository(Category)
     private categoryRepository: Repository<Category>,
+    @InjectRepository(FieldEntity)
+    private fieldRepository: Repository<FieldEntity>,
   ) {}
 
   public async run() {
@@ -41,6 +44,83 @@ export class SeedService {
 
     const createdCategories = await this.categoryRepository.save(categories);
 
+    const listingFieldsSeed = [
+      {
+        name: 'productType',
+        categories: this.getRandomCategories(createdCategories, 4),
+      },
+      {
+        name: 'condition',
+        categories: this.getRandomCategories(createdCategories, 4),
+      },
+      {
+        name: 'yearOfManufacture',
+        categories: this.getRandomCategories(createdCategories, 4),
+      },
+      {
+        name: 'manufacturer',
+        categories: this.getRandomCategories(createdCategories, 4),
+      },
+      {
+        name: 'model',
+        categories: this.getRandomCategories(createdCategories, 4),
+      },
+      {
+        name: 'color',
+        categories: this.getRandomCategories(createdCategories, 4),
+      },
+      {
+        name: 'size',
+        categories: this.getRandomCategories(createdCategories, 4),
+      },
+      {
+        name: 'weight',
+        categories: this.getRandomCategories(createdCategories, 4),
+      },
+      {
+        name: 'driveType',
+        categories: this.getRandomCategories(createdCategories, 4),
+      },
+      {
+        name: 'mileage',
+        categories: this.getRandomCategories(createdCategories, 4),
+      },
+      {
+        name: 'numberOfRooms',
+        categories: this.getRandomCategories(createdCategories, 4),
+      },
+      {
+        name: 'floor',
+        categories: this.getRandomCategories(createdCategories, 4),
+      },
+      {
+        name: 'area',
+        categories: this.getRandomCategories(createdCategories, 4),
+      },
+      {
+        name: 'material',
+        categories: this.getRandomCategories(createdCategories, 4),
+      },
+      {
+        name: 'connectionType',
+        categories: this.getRandomCategories(createdCategories, 4),
+      },
+      {
+        name: 'memorySize',
+        categories: this.getRandomCategories(createdCategories, 4),
+      },
+      {
+        name: 'environmentalClass',
+        categories: this.getRandomCategories(createdCategories, 4),
+      },
+      {
+        name: 'engineType',
+        categories: this.getRandomCategories(createdCategories, 4),
+      },
+    ];
+
+    await this.fieldRepository.save(listingFieldsSeed);
+
     const listingsData = Array(60)
       .fill(null)
       .map(() => ({
@@ -62,7 +142,8 @@ export class SeedService {
     await this.listingRepository.query(
       'TRUNCATE TABLE "listing_categories" CASCADE',
     );
-    await this.listingRepository.query('TRUNCATE TABLE "listing" CASCADE');
+    await this.fieldRepository.query('TRUNCATE TABLE "category" CASCADE');
+    // await this.listingRepository.query('TRUNCATE TABLE "listing" CASCADE');
     await this.categoryRepository.query('TRUNCATE TABLE "category" CASCADE');
     await this.userRepository.query('TRUNCATE TABLE "user" CASCADE');
     console.log('Listings cleared');

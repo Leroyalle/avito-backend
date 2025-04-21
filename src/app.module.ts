@@ -36,6 +36,9 @@ import { CategoryModule } from './category/category.module';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
+        ssl: {
+          rejectUnauthorized: true,
+        },
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true,
       }),
